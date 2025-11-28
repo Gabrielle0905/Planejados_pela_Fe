@@ -1,20 +1,20 @@
 package model;
 
-public class Servico {
+public class ServicoEncontro {
 	
 	private int idServico;
 	private TipoServico servico;
 	private Mae maeResponsavel;
 	private String descricao;
 	
-	public Servico(int idServico, TipoServico servico, Mae maeResponsavel, String descricao) {
+	public ServicoEncontro(int idServico, TipoServico servico, Mae maeResponsavel, String descricao) {
 		this.idServico=idServico;
 		this.servico=servico;
 		this.maeResponsavel=maeResponsavel;
 		this.descricao=descricao;
 	}
 	
-	public Servico(TipoServico servico, Mae maeResponsavel, String descricao) {
+	public ServicoEncontro(TipoServico servico, Mae maeResponsavel, String descricao) {
 		this.servico=servico;
 		this.maeResponsavel=maeResponsavel;
 		this.descricao=descricao;

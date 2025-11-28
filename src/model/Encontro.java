@@ -8,19 +8,19 @@ public class Encontro {
 	
 	private int idEncontro;
 	private LocalDate data;
-	private List<Servico> servicos;
+	private List<ServicoEncontro> servicosDoEncontro;
 	private StatusEncontro status;
 
 	public Encontro(int idEncontro, LocalDate data, StatusEncontro status) {
 		this.idEncontro=idEncontro;
 		this.data=data;
-		this.servicos= new ArrayList<>();
+		this.servicosDoEncontro= new ArrayList<>();
 		this.status=status;
 	}
 	
 	public Encontro(LocalDate data, StatusEncontro status) {
 		this.data=data;
-		this.servicos= new ArrayList<>();
+		this.servicosDoEncontro= new ArrayList<>();
 		this.status=status;
 	}
 	
@@ -32,8 +32,8 @@ public class Encontro {
 		return data;
 	}
 	
-	public List<Servico> getServicos() {
-		return servicos;
+	public List<ServicoEncontro> getServicos() {
+		return servicosDoEncontro;
 	}
 	
 	public StatusEncontro getStatus() {
@@ -50,14 +50,6 @@ public class Encontro {
 	
 	public void setStatus(StatusEncontro status) {
 		this.status = status;
-	}
-	
-	public void adicionarServico(Servico servico) {
-		servicos.add(servico);
-	}
-	
-	public void removerServico(Servico servico) {
-		servicos.remove(servico);
 	}
 	
 }
