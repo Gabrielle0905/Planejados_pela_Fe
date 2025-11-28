@@ -24,6 +24,10 @@ public class Encontro {
 		this.status=status;
 	}
 	
+	public Encontro() {
+		
+	}
+	
 	public int getIdEncontro() {
 		return idEncontro;
 	}

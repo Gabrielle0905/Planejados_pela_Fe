@@ -25,6 +25,10 @@ public class Mae {
 		this.endereco=endereco;
 	}
 	
+	public Mae() {
+		
+	}
+	
 	public int getIdMae() {
 		return idMae;
 	}

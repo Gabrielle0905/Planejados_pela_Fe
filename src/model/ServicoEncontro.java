@@ -20,6 +20,10 @@ public class ServicoEncontro {
 		this.descricao=descricao;
 	}
 	
+	public ServicoEncontro() {
+		
+	}
+	
 	public int getIdServico() {
 		return idServico;
 	}
