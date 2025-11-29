@@ -5,7 +5,7 @@ USE planejadospelafe;
 CREATE TABLE Mae(
 	idMae INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
-    dataNasci DATE,
+    dataNasci DATE NOT NULL,
     telefone INT,
     endereco VARCHAR(150)
 );
@@ -13,16 +13,18 @@ CREATE TABLE Mae(
 CREATE TABLE Encontro(
 	idEncontro INT AUTO_INCREMENT PRIMARY KEY,
     data DATE NOT NULL,
-    status VARCHAR(50)
-);
-  
- CREATE TABLE ServicoEncontro(
-	idServico INT AUTO_INCREMENT PRIMARY KEY,
-	encontro_id INT NOT NULL,
-	FOREIGN KEY (encontro_id) REFERENCES Encontro(idEncontro) ON DELETE CASCADE,
-	servico VARCHAR(100) NOT NULL,
-	mae_id INT,
-	FOREIGN KEY (mae_id) REFERENCES Mae(idMae)
- )
+    statusEncontro VARCHAR(50) NOT NULL
+) ;
 
+
+
+CREATE TABLE ServicodoEncontro(
+	idServico INT AUTO_INCREMENT PRIMARY KEY,
+    tipo VARCHAR(50) NOT NULL,
+    mae VARCHAR(50) NOT NULL,
+    descricao VARCHAR(150) NOT NULL,
+    
+    id_Encontro INT,
+    FOREIGN KEY (id_encontro) REFERENCES Encontro(idEncontro)
+);
     
