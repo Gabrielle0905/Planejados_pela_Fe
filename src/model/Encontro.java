@@ -8,7 +8,7 @@ public class Encontro {
 	
 	private int idEncontro;
 	private LocalDate data;
-	private List<ServicoEncontro> servicosDoEncontro;
+	private List<ServicoDoEncontro> servicosDoEncontro;
 	private StatusEncontro status;
 
 	public Encontro(int idEncontro, LocalDate data, StatusEncontro status) {
@@ -36,7 +36,7 @@ public class Encontro {
 		return data;
 	}
 	
-	public List<ServicoEncontro> getServicos() {
+	public List<ServicoDoEncontro> getServicos() {
 		return servicosDoEncontro;
 	}
 	

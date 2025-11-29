@@ -1,26 +1,26 @@
 package model;
 
-public class ServicoEncontro {
+public class ServicoDoEncontro {
 	
 	private int idServico;
-	private TipoServico servico;
+	private TipoServico tipo;
 	private Mae maeResponsavel;
 	private String descricao;
 	
-	public ServicoEncontro(int idServico, TipoServico servico, Mae maeResponsavel, String descricao) {
+	public ServicoDoEncontro(int idServico, TipoServico tipo, Mae maeResponsavel, String descricao) {
 		this.idServico=idServico;
-		this.servico=servico;
+		this.tipo=tipo;
 		this.maeResponsavel=maeResponsavel;
 		this.descricao=descricao;
 	}
 	
-	public ServicoEncontro(TipoServico servico, Mae maeResponsavel, String descricao) {
-		this.servico=servico;
+	public ServicoDoEncontro(TipoServico tipo, Mae maeResponsavel, String descricao) {
+		this.tipo=tipo;
 		this.maeResponsavel=maeResponsavel;
 		this.descricao=descricao;
 	}
 	
-	public ServicoEncontro() {
+	public ServicoDoEncontro() {
 		
 	}
 	
@@ -29,7 +29,7 @@ public class ServicoEncontro {
 	}
 	
 	public TipoServico getServico() {
-		return servico;
+		return tipo;
 	}
 	
 	public Mae getMaeResponsavel() {
@@ -44,8 +44,8 @@ public class ServicoEncontro {
 		this.idServico=idServico;
 	}
 	
-	public void setServico(TipoServico servico) {
-		this.servico=servico;
+	public void setServico(TipoServico tipo) {
+		this.tipo=tipo;
 	}
 	
 	public void setMaeResponsavel(Mae maeResponsavel){
