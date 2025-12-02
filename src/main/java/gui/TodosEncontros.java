@@ -6,6 +6,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-public class CadastrarEncontros extends Application{
+public class TodosEncontros{
+	
+	public void mostrar(Stage todosencontrosStage) {
+		
+	}
 
 }

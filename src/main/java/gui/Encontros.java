@@ -18,33 +18,29 @@ import model.Encontro;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Encontros extends Application{
+public class Encontros{
 	
-	@Override
-	public void start(Stage encontroStage) {
+	public void mostrar(Stage encontroStage) {
 		
 		Button btencontros = new Button ("Encontros");
+		Label barra = new Label("|");
 		Button btcadastromae = new Button ("Cadastrar Mães");
+		Label barra2 = new Label("|");
 		Button btaniversariantes = new Button ("Aniversariantes");
 		
 		HBox topo = new HBox(20);
 		topo.setAlignment(Pos.CENTER);
-		topo.getChildren().addAll(btencontros, btcadastromae, btaniversariantes);
+		topo.getChildren().addAll(btencontros, barra, btcadastromae, barra2, btaniversariantes);
 		topo.setId("topo");
 		
 		btencontros.setOnAction(e -> {
-			Encontros tela= new Encontros();
-			try {
-				tela.start(encontroStage);
-			}catch(Exception ex) {
-				ex.printStackTrace();
-			}
+			
 		});
 		
 		btcadastromae.setOnAction(e -> {
 			CadastrarMaes tela = new CadastrarMaes();
 			try {
-				tela.start(encontroStage);
+				tela.mostrar(encontroStage);
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
@@ -53,7 +49,7 @@ public class Encontros extends Application{
 		btaniversariantes.setOnAction(e -> {
 			Aniversariantes tela = new Aniversariantes();
 			try {
-				tela.start(encontroStage);
+				tela.mostrar(encontroStage);
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
@@ -68,7 +64,7 @@ public class Encontros extends Application{
 		btCadastrar.setOnAction(e -> {
 			CadastrarEncontros tela = new CadastrarEncontros();
 			try {
-				tela.start(encontroStage);
+				tela.mostrar(encontroStage);
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
@@ -113,7 +109,7 @@ public class Encontros extends Application{
 		btTodosEnc.setOnAction(e -> {
 			TodosEncontros tela = new TodosEncontros();
 			try {
-				tela.start(encontroStage);
+				tela.mostrar(encontroStage);
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}
@@ -129,9 +125,6 @@ public class Encontros extends Application{
 		
 		encontroStage.setScene(scene);
 	}
-	
-	public static void main(String[]args) {
-		launch(args);
-	}
+
 
 }

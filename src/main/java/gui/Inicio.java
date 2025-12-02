@@ -16,9 +16,9 @@ public class Inicio extends Application {
 	public void start(Stage inicioStage) {
 		
 		Text titulo = new Text("Bem Vinda!");
-		titulo.setId("titulo");
+		titulo.setId("titulos");
 		
-		Image img = new Image(getClass().getResource("/images/logo.png").toString());
+		Image img = new Image(getClass().getResource("/images/logo.png").toExternalForm());
 		ImageView imgView = new ImageView(img);
 		imgView.setId("logo");
 		
@@ -27,14 +27,10 @@ public class Inicio extends Application {
 		
 		botao.setOnAction(e -> {
 			Encontros encontros = new Encontros();
-			try {
-				encontros.start(inicioStage);
-			}catch(Exception ex) {
-				ex.printStackTrace();
-			}
+			encontros.mostrar(inicioStage);
 		});
 		
-		VBox layout = new VBox(20);
+		VBox layout = new VBox(25);
 		layout.setAlignment(Pos.CENTER);
 		layout.getChildren().addAll(titulo, imgView, botao);
 		layout.setId("layout");

@@ -2,11 +2,11 @@
 	-fx-background-color: #29B3AC;
 }
 
-#titulo{
+#titulos{	
+	-fx-fill: white;
 	-fx-font-family: "Tahoma";
 	-fx-font-size: 64px;
 	-fx-font-weight: bold;
-	-fx-text-fill: white;
 }
 
 #botao{
@@ -17,7 +17,5 @@
 	-fx-padding: 10px 20px;
 	-fx-font-family: "Tahoma";
 	-fx-font-size: 28px;
-	-fx-text-fill: white;
-	
-	
+	-fx-text-fill: white;	
 }
