@@ -1,0 +1,21 @@
+#layout{
+	-fx-background-color: #29B3AC;
+}
+
+#titulos{	
+	-fx-fill: white;
+	-fx-font-family: "Tahoma";
+	-fx-font-size: 64px;
+	-fx-font-weight: bold;
+}
+
+#botao{
+	-fx-background-color: #8AD0CC;
+	-fx-background-radius: 48px;
+	-fx-border-radius: 48px;
+	-fx-border-width: 0;
+	-fx-padding: 10px 20px;
+	-fx-font-family: "Tahoma";
+	-fx-font-size: 28px;
+	-fx-text-fill: white;	
+}

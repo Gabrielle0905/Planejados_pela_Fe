@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
-public class Inicio extends Application {
+public class App extends Application {
 	
 	@Override
 	public void start(Stage inicioStage) {
