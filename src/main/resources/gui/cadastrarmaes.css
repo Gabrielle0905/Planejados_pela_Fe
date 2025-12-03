@@ -1,0 +1,107 @@
+#topo{
+	-fx-pref-height: 112px;
+	-fx-background-color:#29B3AC;
+}
+
+.botaotopo{
+	-fx-background-color: transparent;
+	-fx-border-width: 0;
+	-fx-font-family: "Tahoma";
+	-fx-font-size: 24px;
+	-fx-text-fill: white;
+	-fx-padding: 10px;
+}
+
+.barra{
+	-fx-font-family: "Tahoma";
+	-fx-text-fill:white;
+	-fx-font-size: 24px;
+}
+
+#titulo{
+	-fx-font-family: "Tahoma";
+	-fx-fill: #29B3AC;
+	-fx-font-size: 40px;
+	-fx-font-weight: bold;
+}
+
+.botao{
+	-fx-background-color: #8AD0CC;
+	-fx-background-radius: 48px;
+	-fx-border-radius: 48px;
+	-fx-border-width: 0;
+	-fx-padding: 10px 40px;
+	-fx-font-family: "Tahoma";
+	-fx-font-size: 28px;
+	-fx-text-fill: white;	
+}
+
+#subtitulo{
+	-fx-font-family: "Tahoma";
+	-fx-text-fill: #29B3AC;
+	-fx-font-size: 36px;
+}
+
+.subtitulo{
+	-fx-font-family: "Tahoma";
+	-fx-text-fill: #29B3AC;
+	-fx-font-size: 36px;
+}
+
+.campo-texto{
+	-fx-font-family: "Tahoma";
+	-fx-font-size: 20px;
+	-fx-padding: 10px;
+	-fx-background-radius: 10px;
+	-fx-border-radius: 10px;
+	-fx-border-color: #29B3AC;
+	-fx-border-width: 2px;
+	-fx-pref-width: 400px;
+}
+
+#layout{
+	-fx-alignment: top-center;
+}
+
+.mensagem-erro {
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 16px;
+    -fx-text-fill: red;
+    -fx-padding: 10px;
+}
+
+.label-form {
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+    -fx-pref-width: 180px;
+}
+
+.campo-texto {
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 16px;
+    -fx-padding: 8px 0px;
+    -fx-pref-width: 300px;
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: white;
+    -fx-background-insets: 0;
+	-fx-text-fill: white; 
+}
+
+.campo-texto .prompt-text {
+    -fx-fill: white;
+}
+
+#card {
+    -fx-background-color: #29B3AC;
+    -fx-background-radius: 56px;
+    -fx-border-radius: 56px;
+}
+
+.mensagem-erro {
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 16px;
+    -fx-text-fill: red;
+    -fx-padding: 10px;
+}
