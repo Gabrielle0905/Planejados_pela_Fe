@@ -1,5 +1,25 @@
-/target/
-.project
+# Build
+target/
+build/
+out/
 
-/shelf/
-/workspace.xml
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Dependências baixadas
+lib/
+
+# Mas mantenha arquivos importantes
+!README.md
+!pom.xml
