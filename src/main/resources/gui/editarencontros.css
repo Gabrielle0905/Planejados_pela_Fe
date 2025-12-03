@@ -1,0 +1,263 @@
+/* editarencontros.css - Estilo para a página de Editar Encontros */
+
+/* Estilos gerais */
+.root {
+    -fx-background-color: #f0f8ff;
+}
+
+.center {
+    -fx-spacing: 30;
+    -fx-padding: 20;
+    -fx-background-color: #f0f8ff;
+}
+
+/* Botão voltar */
+.btn_voltar {
+    -fx-text-fill: #29B3AC;
+    -fx-alignment: top-left;
+    -fx-background-color: transparent;
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn_voltar:hover {
+    -fx-text-fill: #1e8c85;
+}
+
+/* Título */
+.title-label {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding: 0 0 10 0;
+}
+
+.title {
+    -fx-alignment: top-center;
+}
+
+/* Seções */
+.section-title {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: #29B3AC;
+    -fx-padding: 10 0 5 0;
+}
+
+/* Painéis */
+.painel-esquerdo {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-color: #29B3AC;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-padding: 20;
+}
+
+.painel-direito {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-color: #29B3AC;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-padding: 20;
+}
+
+/* Listas de encontros */
+.lista-encontros {
+    -fx-background-color: white;
+    -fx-border-color: #29B3AC;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+.lista-encontros .list-cell {
+    -fx-padding: 12px 15px;
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.lista-encontros .list-cell:filled:hover {
+    -fx-background-color: #e8f4fc;
+}
+
+.lista-encontros .list-cell:filled:selected {
+    -fx-background-color: #29B3AC;
+    -fx-text-fill: white;
+}
+
+/* Seção de seleção */
+.secao-selecao {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+
+.label-selecao {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Campos de formulário */
+.campo-formulario {
+    -fx-font-size: 14;
+    -fx-background-color: white;
+    -fx-border-color: #29B3AC;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+.campo-formulario:focused {
+    -fx-border-color: #1e8c85;
+}
+
+.rotulo-formulario {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* DatePicker */
+.date-picker {
+    -fx-font-size: 14;
+    -fx-background-color: white;
+    -fx-border-color: #29B3AC;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+.date-picker .text-field {
+    -fx-background-color: white;
+}
+
+/* Painel de serviços */
+.painel-servicos {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+
+.label-servicos {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Botões */
+.botao-principal {
+    -fx-background-color: #29B3AC;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.botao-principal:hover {
+    -fx-background-color: #1e8c85;
+}
+
+.botao-cancelar {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.botao-cancelar:hover {
+    -fx-background-color: #c0392b;
+}
+
+.botao-secundario {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+
+.botao-secundario:hover {
+    -fx-background-color: #7f8c8d;
+}
+
+/* Botões de ação grandes */
+.botao-acao-grande {
+    -fx-background-color: #29B3AC;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+.botao-acao-grande:hover {
+    -fx-background-color: #1e8c85;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+/* Container de botões */
+.container-botoes {
+    -fx-spacing: 15;
+    -fx-padding: 20px 0 0 0;
+    -fx-alignment: center;
+}
+
+/* Grid de painéis */
+.grid-paineis {
+    -fx-hgap: 20;
+    -fx-vgap: 20;
+}
+
+/* Cartões de encontro (para lista de próximos) */
+.cartao-encontro {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-padding: 12px 15px;
+    -fx-spacing: 8px;
+}
+
+.cartao-data {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.cartao-status {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-padding: 3px 10px;
+    -fx-border-radius: 3px;
+}
+
+.status-nao-realizado {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+}
+
+.status-realizado {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+.status-futuro {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+.status-cancelado {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}

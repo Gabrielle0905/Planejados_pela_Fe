@@ -38,6 +38,13 @@ public class Encontros{
 		Button btaniversariantes = new Button ("Aniversariantes");
 		btaniversariantes.getStyleClass().add("botaotopo");
 
+        Button btneditar = new Button("Editar");
+        btneditar.setOnAction(e -> {
+            Stage editarStage = new Stage();
+            EditarEncontros telaEditar = new EditarEncontros();
+            telaEditar.mostrar(editarStage);
+        });
+
 		
 		HBox topo = new HBox(40);
 		topo.setAlignment(Pos.CENTER);
@@ -139,7 +146,7 @@ public class Encontros{
 		layout.setPadding(new Insets(50, 0, 0, 0));
 		layout.setId("layout");
 		layout.setFillWidth(false);
-		layout.getChildren().addAll(titulo, btCadastrar, subtitulo, card, btTodosEnc);
+		layout.getChildren().addAll(titulo, btCadastrar, subtitulo, card, btTodosEnc, btneditar);
 		
 		BorderPane root = new BorderPane();
 		root.setTop(topo);

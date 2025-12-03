@@ -32,7 +32,7 @@ public class EncontroDAO {
 	}
 	
 	public void atualizar(Encontro encontro) {
-		String sql = "UPDATE Encontro SET data = ?, statusEncontro = ? WHERE idEnconto = ? AND data > ?";
+		String sql = "UPDATE Encontro SET data = ?, statusEncontro = ? WHERE idEncontro = ? AND data > ?";
 		
 		try(Connection conn = ConnectionFactory.getConnection()){
 			
