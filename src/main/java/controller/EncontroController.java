@@ -12,8 +12,8 @@ public class EncontroController {
 		this.encontroDAO = new EncontroDAO();
 	}
 	
-	public void cadastrar(Encontro encontro) {
-		encontroDAO.cadastrar(encontro);
+	public int cadastrar(Encontro encontro) {
+        return encontroDAO.cadastrar(encontro);
 	}
 	
 	public void atualizar(Encontro encontro) {

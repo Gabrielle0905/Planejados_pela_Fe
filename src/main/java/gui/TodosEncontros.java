@@ -1,6 +1,7 @@
 package gui;
 
 import dao.EncontroDAO;
+import dao.ServicodoEncontroDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -25,24 +26,32 @@ import java.util.Optional;
 public class TodosEncontros {
 
     private Encontro encontroAtual;
+    private ServicodoEncontroDAO servicoDAO;
 
     public void mostrar(Stage todosencontrosStage) {
+
+        servicoDAO = new ServicodoEncontroDAO();
 
         VBox center = new VBox(30);
         center.getStyleClass().add("center");
         center.setAlignment(Pos.TOP_CENTER);
         center.setFillWidth(true);
 
-        // Botão voltar (alinhado à esquerda)
         Button voltar = new Button("Voltar");
         voltar.getStyleClass().add("btn_voltar");
+        voltar.setOnAction(event -> {
+            Encontros tela = new Encontros();
+            try {
+                tela.mostrar(todosencontrosStage);
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+        });
 
-        // Container para o botão voltar (mantém à esquerda)
         HBox voltarContainer = new HBox(voltar);
         voltarContainer.setAlignment(Pos.TOP_LEFT);
         HBox.setHgrow(voltarContainer, Priority.ALWAYS);
 
-        // Seção 1: Todos os Encontros
         VBox encontrosSection = new VBox(15);
         encontrosSection.setAlignment(Pos.TOP_CENTER);
         encontrosSection.setMaxWidth(Double.MAX_VALUE);
@@ -78,7 +87,6 @@ public class TodosEncontros {
         ObservableList<Encontro> encontrosObservable = FXCollections.observableArrayList(encontros);
         todosEncontrosTable.setItems(encontrosObservable);
 
-        // Container para a tabela (centralizado)
         HBox tabelaContainer = new HBox(todosEncontrosTable);
         tabelaContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(tabelaContainer, Priority.ALWAYS);
@@ -89,7 +97,6 @@ public class TodosEncontros {
         separador.getStyleClass().add("separator");
         separador.setMaxWidth(600);
 
-        // Seção 2: Exportar Encontro
         VBox exportarSection = new VBox(15);
         exportarSection.setAlignment(Pos.TOP_CENTER);
         exportarSection.setMaxWidth(600);
@@ -136,8 +143,17 @@ public class TodosEncontros {
 
         TableColumn<ServicoDoEncontro, String> servicoCol = new TableColumn<>("Serviços:");
         servicoCol.setPrefWidth(380);
-        servicoCol.setCellValueFactory(cellData ->
-                new javafx.beans.property.SimpleStringProperty(cellData.getValue().toString()));
+        servicoCol.setCellValueFactory(cellData -> {
+            ServicoDoEncontro servico = cellData.getValue();
+            String texto = "• " + servico.getServico().name();
+            if (servico.getMaeResponsavel() != null) {
+                texto += " - " + servico.getMaeResponsavel().getNome();
+            }
+            if (servico.getDescricao() != null && !servico.getDescricao().isEmpty()) {
+                texto += " (" + servico.getDescricao() + ")";
+            }
+            return new javafx.beans.property.SimpleStringProperty(texto);
+        });
         servicosTable.getColumns().add(servicoCol);
         servicosTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -152,7 +168,6 @@ public class TodosEncontros {
         exportarButtonContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(exportarButtonContainer, Priority.ALWAYS);
 
-        // Adicionar ação ao botão buscar
         buscarButton.setOnAction(event -> {
             LocalDate dataSelecionada = dataPicker.getValue();
             if (dataSelecionada != null) {
@@ -166,8 +181,13 @@ public class TodosEncontros {
                     infoEncontroLabel.setText("Encontro do dia " + dataFormatada);
                     infoEncontroLabel.setVisible(true);
 
-                    ObservableList<ServicoDoEncontro> servicosObservable =
-                            FXCollections.observableArrayList(encontroAtual.getServicos());
+                    // CORREÇÃO: Buscar serviços do DAO em vez de usar a lista vazia do encontro
+                    List<ServicoDoEncontro> servicos = servicoDAO.buscarPorEncontro(encontroAtual.getIdEncontro());
+                    ObservableList<ServicoDoEncontro> servicosObservable = FXCollections.observableArrayList(servicos);
+
+                    // Atualizar também no objeto encontro para a exportação
+                    encontroAtual.setServicos(servicos);
+
                     servicosTable.setItems(servicosObservable);
                     servicosTable.setVisible(true);
                 } else {
@@ -179,9 +199,13 @@ public class TodosEncontros {
             }
         });
 
-        // Adicionar ação ao botão exportar
         exportarEncontro.setOnAction(event -> {
             if (encontroAtual != null) {
+                // Garantir que os serviços estão atualizados antes de exportar
+                if (encontroAtual.getServicos() == null || encontroAtual.getServicos().isEmpty()) {
+                    List<ServicoDoEncontro> servicos = servicoDAO.buscarPorEncontro(encontroAtual.getIdEncontro());
+                    encontroAtual.setServicos(servicos);
+                }
                 exportarParaTxt(encontroAtual);
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -192,7 +216,6 @@ public class TodosEncontros {
             }
         });
 
-        // Adicionar todos os elementos à seção de exportar
         exportarSection.getChildren().addAll(
                 tituloExportarContainer,
                 buscarLabelContainer,
@@ -202,7 +225,6 @@ public class TodosEncontros {
                 exportarButtonContainer
         );
 
-        // Adicionar todas as seções ao layout principal
         center.getChildren().addAll(
                 voltarContainer,
                 encontrosSection,
@@ -224,11 +246,10 @@ public class TodosEncontros {
         Scene scene = new Scene(root, 900, 700);
         scene.getStylesheets().add(getClass().getResource("/gui/todosencontros.css").toExternalForm());
 
-        todosencontrosStage.setTitle("Planejados pela Fé - Todos os Encontros");
+        todosencontrosStage.setTitle("Planejados pela Fé");
         todosencontrosStage.setScene(scene);
         todosencontrosStage.setFullScreen(true);
         todosencontrosStage.setFullScreenExitHint("");
-        todosencontrosStage.show();
     }
 
     private void exportarParaTxt(Encontro encontro) {

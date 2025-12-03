@@ -86,7 +86,7 @@ public class Aniversariantes {
         
         VBox card = new VBox(15); 
         card.setId("card");
-        card.setPrefWidth(800);
+        card.setPrefWidth(500);
         card.setPadding(new Insets(30));
         card.setAlignment(Pos.TOP_CENTER);
         

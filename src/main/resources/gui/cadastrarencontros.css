@@ -23,7 +23,13 @@
 	-fx-alignment: top-center;
 	-fx-padding: 50px 0px 0px 0px;
 }
-
+.root{
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
 .botao{
 	-fx-background-color: #8AD0CC;
 	-fx-background-radius: 48px;

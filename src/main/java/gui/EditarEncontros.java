@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import dao.EncontroDAO;
 import dao.ServicodoEncontroDAO;
 import dao.MaeDAO;
@@ -24,7 +25,6 @@ public class EditarEncontros {
     private ComboBox<Encontro> comboEncontros;
     private DatePicker datePickerData;
     private ComboBox<StatusEncontro> comboStatus;
-    private ListView<Encontro> listViewProximosEncontros;
     private ListView<ServicoDoEncontro> listViewServicos;
     private ComboBox<TipoServico> comboServicos;
     private ComboBox<Mae> comboMaes;
@@ -40,76 +40,53 @@ public class EditarEncontros {
     private ObservableList<Mae> maesList;
 
     private Encontro encontroAtual;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM");
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public void mostrar(Stage editarEncontrosStage) {
         encontroDAO = new EncontroDAO();
         servicoDAO = new ServicodoEncontroDAO();
         maeDAO = new MaeDAO();
 
-        // Inicializar componentes
         inicializarComponentes();
 
-        // Layout principal
         BorderPane root = new BorderPane();
         root.getStyleClass().add("root");
 
-        // ========== CABEÇALHO ==========
         VBox cabecalho = new VBox();
         cabecalho.setPadding(new Insets(20, 20, 10, 20));
 
-        // Botão voltar
         HBox hboxVoltar = new HBox();
         hboxVoltar.setAlignment(Pos.TOP_LEFT);
 
-        Button btnVoltar = new Button("←");
+        Button btnVoltar = new Button("Voltar");
         btnVoltar.getStyleClass().add("btn_voltar");
         btnVoltar.setOnAction(e -> {
-            editarEncontrosStage.close();
+            Encontros tela = new Encontros();
+            try {
+                tela.mostrar(editarEncontrosStage);
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
         });
 
         hboxVoltar.getChildren().add(btnVoltar);
 
-        // Título principal
         Label tituloPagina = new Label("EDITAR ENCONTROS");
         tituloPagina.getStyleClass().addAll("title-label", "title");
 
         cabecalho.getChildren().addAll(hboxVoltar, tituloPagina);
 
-        // ========== CONTEÚDO PRINCIPAL ==========
         VBox conteudoPrincipal = new VBox(20);
         conteudoPrincipal.setPadding(new Insets(10, 20, 20, 20));
         conteudoPrincipal.getStyleClass().add("center");
 
-        // Grid para os painéis
-        GridPane gridPaineis = new GridPane();
-        gridPaineis.getStyleClass().add("grid-paineis");
-        gridPaineis.setHgap(20);
-        gridPaineis.setVgap(20);
-
-        // ========== PAINEL ESQUERDO - PRÓXIMOS ENCONTROS ==========
-        VBox painelEsquerdo = new VBox(15);
-        painelEsquerdo.getStyleClass().add("painel-esquerdo");
-        painelEsquerdo.setPrefWidth(350);
-
-        // Próximos encontros
-        Label lblProximos = new Label("Próximos Encontros");
-        lblProximos.getStyleClass().add("section-title");
-
-        listViewProximosEncontros = new ListView<>();
-        listViewProximosEncontros.getStyleClass().add("lista-encontros");
-        listViewProximosEncontros.setPrefHeight(300);
-
-        painelEsquerdo.getChildren().addAll(lblProximos, listViewProximosEncontros);
-
-        // ========== PAINEL DIREITO - EDIÇÃO ==========
-        VBox painelDireito = new VBox(15);
-        painelDireito.getStyleClass().add("painel-direito");
+        VBox painelEdicao = new VBox(15);
+        painelEdicao.getStyleClass().add("painel-edicao");
+        painelEdicao.setPrefWidth(900);
 
         Label lblEditarEncontro = new Label("Editar Encontro");
         lblEditarEncontro.getStyleClass().add("section-title");
 
-        // Seção de seleção
         VBox secaoSelecao = new VBox(10);
         secaoSelecao.getStyleClass().add("secao-selecao");
         secaoSelecao.setPadding(new Insets(15));
@@ -122,7 +99,10 @@ public class EditarEncontros {
 
         comboEncontros = new ComboBox<>();
         comboEncontros.getStyleClass().add("campo-formulario");
-        comboEncontros.setPrefWidth(300);
+        comboEncontros.setPrefWidth(400);
+        comboEncontros.setPromptText("Selecione um encontro...");
+
+        configurarComboEncontros();
 
         Button btnAtualizarLista = new Button("Atualizar");
         btnAtualizarLista.getStyleClass().add("botao-principal");
@@ -131,47 +111,51 @@ public class EditarEncontros {
         hboxSelecao.getChildren().addAll(comboEncontros, btnAtualizarLista);
         secaoSelecao.getChildren().addAll(lblSelecionar, hboxSelecao);
 
-        // Formulário de edição
+        VBox formularioEncontro = new VBox(15);
+        formularioEncontro.getStyleClass().add("formulario-encontro");
+        formularioEncontro.setPadding(new Insets(20));
+        formularioEncontro.setStyle("-fx-border-color: #ddd; -fx-border-radius: 10; -fx-border-width: 1;");
+
         GridPane formulario = new GridPane();
         formulario.setHgap(15);
         formulario.setVgap(15);
-        formulario.setPadding(new Insets(15, 0, 0, 0));
 
-        // Campo Data
         Label lblData = new Label("Data:");
         lblData.getStyleClass().add("rotulo-formulario");
         datePickerData = new DatePicker();
         datePickerData.getStyleClass().add("date-picker");
-        datePickerData.setPrefWidth(200);
+        datePickerData.setPrefWidth(250);
 
-        // Campo Status
         Label lblStatus = new Label("Status:");
         lblStatus.getStyleClass().add("rotulo-formulario");
         comboStatus = new ComboBox<>();
         comboStatus.getStyleClass().add("campo-formulario");
         comboStatus.setItems(FXCollections.observableArrayList(StatusEncontro.values()));
-        comboStatus.setPrefWidth(200);
+        comboStatus.setPrefWidth(250);
 
         formulario.add(lblData, 0, 0);
         formulario.add(datePickerData, 1, 0);
         formulario.add(lblStatus, 0, 1);
         formulario.add(comboStatus, 1, 1);
 
-        // Seção de serviços
+        formularioEncontro.getChildren().addAll(
+                new Label("Informações do Encontro"),
+                formulario
+        );
+
         Label lblServicos = new Label("Serviços do Encontro");
         lblServicos.getStyleClass().add("section-title");
 
         VBox secaoServicos = new VBox(10);
 
-        // Lista de serviços
         listViewServicos = new ListView<>();
-        listViewServicos.getStyleClass().add("lista-encontros");
-        listViewServicos.setPrefHeight(150);
+        listViewServicos.getStyleClass().add("lista-servicos");
+        listViewServicos.setPrefHeight(200);
 
-        // Formulário para adicionar serviço
         VBox formServico = new VBox(10);
         formServico.getStyleClass().add("painel-servicos");
         formServico.setPadding(new Insets(15));
+        formServico.setStyle("-fx-border-color: #eee; -fx-border-radius: 8; -fx-border-width: 1;");
 
         Label lblNovoServico = new Label("Adicionar Serviço:");
         lblNovoServico.getStyleClass().add("label-servicos");
@@ -180,26 +164,24 @@ public class EditarEncontros {
         gridServico.setHgap(10);
         gridServico.setVgap(10);
 
-        // Tipo de serviço
         Label lblTipoServico = new Label("Tipo:");
         lblTipoServico.getStyleClass().add("rotulo-formulario");
         comboServicos = new ComboBox<>();
         comboServicos.getStyleClass().add("campo-formulario");
-        comboServicos.setPrefWidth(200);
+        comboServicos.setPrefWidth(250);
 
-        // Mãe responsável
         Label lblMae = new Label("Mãe:");
         lblMae.getStyleClass().add("rotulo-formulario");
         comboMaes = new ComboBox<>();
         comboMaes.getStyleClass().add("campo-formulario");
-        comboMaes.setPrefWidth(200);
+        comboMaes.setPrefWidth(250);
 
-        // Descrição
         Label lblDescricao = new Label("Descrição:");
         lblDescricao.getStyleClass().add("rotulo-formulario");
         txtDescricao = new TextField();
         txtDescricao.getStyleClass().add("campo-formulario");
         txtDescricao.setPromptText("Opcional");
+        txtDescricao.setPrefWidth(250);
 
         gridServico.add(lblTipoServico, 0, 0);
         gridServico.add(comboServicos, 1, 0);
@@ -208,7 +190,6 @@ public class EditarEncontros {
         gridServico.add(lblDescricao, 0, 2);
         gridServico.add(txtDescricao, 1, 2);
 
-        // Botões de serviços
         HBox botoesServico = new HBox(10);
         Button btnAddServico = new Button("Adicionar Serviço");
         btnAddServico.getStyleClass().add("botao-principal");
@@ -224,7 +205,6 @@ public class EditarEncontros {
 
         secaoServicos.getChildren().addAll(listViewServicos, formServico);
 
-        // Botões de ação
         HBox botoesAcao = new HBox(15);
         botoesAcao.getStyleClass().add("container-botoes");
 
@@ -244,161 +224,162 @@ public class EditarEncontros {
 
         botoesAcao.getChildren().addAll(btnSalvar, btnCancelarEncontro, btnLimpar);
 
-        // Montar painel direito
-        painelDireito.getChildren().addAll(
+        painelEdicao.getChildren().addAll(
                 lblEditarEncontro,
                 secaoSelecao,
-                formulario,
+                formularioEncontro,
                 lblServicos,
                 secaoServicos,
                 botoesAcao
         );
 
-        // Adicionar painéis ao grid
-        gridPaineis.add(painelEsquerdo, 0, 0);
-        gridPaineis.add(painelDireito, 1, 0);
+        conteudoPrincipal.getChildren().addAll(painelEdicao);
 
-        // Montar conteúdo principal
-        conteudoPrincipal.getChildren().addAll(gridPaineis);
-
-        // Configurar layout principal
         root.setTop(cabecalho);
         root.setCenter(conteudoPrincipal);
 
-        // Configurar cena
         Scene scene = new Scene(root, 1200, 750);
 
-        // Carregar CSS
         try {
             scene.getStylesheets().add(getClass().getResource("editarencontros.css").toExternalForm());
         } catch (Exception e) {
-            System.out.println("CSS não encontrado: " + e.getMessage());
-            // Usar estilos inline como fallback
-            aplicarEstilosInline(root);
+            root.setStyle("-fx-background-color: #f0f8ff;");
         }
 
-        // Configurar stage
-        editarEncontrosStage.setTitle("Planejados pela Fé - Editar Encontros");
+        editarEncontrosStage.setTitle("Planejados pela Fé");
         editarEncontrosStage.setScene(scene);
-        editarEncontrosStage.show();
+        editarEncontrosStage.setFullScreen(true);
 
-        // Carregar dados iniciais
         carregarTodosDados();
 
-        // Configurar listeners
         comboEncontros.setOnAction(e -> carregarDadosEncontro());
 
-        // Configurar cell factories
         configurarCellFactories();
+
     }
 
     private void aplicarEstilosInline(BorderPane root) {
-        // Fallback para quando o CSS não for encontrado
         root.setStyle("-fx-background-color: #f0f8ff;");
     }
 
     private void inicializarComponentes() {
         encontrosList = FXCollections.observableArrayList();
         servicosList = FXCollections.observableArrayList();
-
-        // Carregar todos os tipos de serviço disponíveis
         tiposServicoList = FXCollections.observableArrayList(TipoServico.values());
-
-        // Inicializar lista de mães
         maesList = FXCollections.observableArrayList();
     }
 
     private void configurarCellFactories() {
-        // Configurar listViewProximosEncontros para mostrar cartões
-        listViewProximosEncontros.setCellFactory(param -> new ListCell<Encontro>() {
-            private final VBox container = new VBox(5);
-            private final HBox linha1 = new HBox(10);
-            private final Label dataLabel = new Label();
-            private final Label statusLabel = new Label();
-
-            {
-                linha1.getChildren().addAll(dataLabel, statusLabel);
-                container.getChildren().add(linha1);
-                container.setPadding(new Insets(10));
-                container.getStyleClass().add("cartao-encontro");
-            }
-
-            @Override
-            protected void updateItem(Encontro encontro, boolean empty) {
-                super.updateItem(encontro, empty);
-                if (empty || encontro == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    dataLabel.setText(dateFormatter.format(encontro.getData()) + " - LOCAL");
-                    dataLabel.getStyleClass().add("cartao-data");
-
-                    statusLabel.setText(encontro.getStatus().toString());
-                    statusLabel.getStyleClass().add("cartao-status");
-                    statusLabel.getStyleClass().add(getClasseStatus(encontro.getStatus()));
-
-                    setGraphic(container);
-                    setText(null);
-                }
-            }
-        });
-
-        // Configurar comboEncontros
-        comboEncontros.setCellFactory(param -> new ListCell<Encontro>() {
-            @Override
-            protected void updateItem(Encontro item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("ID: %d - %s - %s",
-                            item.getIdEncontro(),
-                            item.getData(),
-                            item.getStatus()));
-                }
-            }
-        });
-
-        // Configurar listViewServicos
         listViewServicos.setCellFactory(param -> new ListCell<ServicoDoEncontro>() {
             @Override
             protected void updateItem(ServicoDoEncontro servico, boolean empty) {
                 super.updateItem(servico, empty);
                 if (empty || servico == null) {
                     setText(null);
+                    setGraphic(null);
                 } else {
-                    String texto = "• " + servico.getServico().name();
-                    if (servico.getMaeResponsavel() != null) {
-                        texto += " - " + servico.getMaeResponsavel().getNome();
+                    HBox container = new HBox(10);
+                    container.setAlignment(Pos.CENTER_LEFT);
+                    container.setPadding(new Insets(5));
+
+                    Label marcador = new Label("•");
+                    marcador.setStyle("-fx-font-size: 16px; -fx-text-fill: #2c3e50;");
+
+                    VBox infoBox = new VBox(3);
+
+                    String tipoFormatado = formatarNomeServico(servico.getServico());
+                    Label lblTipo = new Label(tipoFormatado);
+                    lblTipo.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2c3e50;");
+
+                    String nomeMae = "Mãe não definida";
+                    if (servico.getMaeResponsavel() != null && servico.getMaeResponsavel().getNome() != null) {
+                        nomeMae = servico.getMaeResponsavel().getNome();
                     }
-                    if (servico.getDescricao() != null && !servico.getDescricao().isEmpty()) {
-                        texto += " (" + servico.getDescricao() + ")";
+                    Label lblMae = new Label("Responsável: " + nomeMae);
+                    lblMae.setStyle("-fx-font-size: 12px; -fx-text-fill: #555;");
+
+                    HBox descBox = new HBox();
+                    if (servico.getDescricao() != null && !servico.getDescricao().trim().isEmpty()) {
+                        Label lblDesc = new Label("Descrição: " + servico.getDescricao());
+                        lblDesc.setStyle("-fx-font-size: 11px; -fx-font-style: italic; -fx-text-fill: #777;");
+                        descBox.getChildren().add(lblDesc);
                     }
-                    setText(texto);
+
+                    infoBox.getChildren().addAll(lblTipo, lblMae, descBox);
+                    container.getChildren().addAll(marcador, infoBox);
+
+                    setGraphic(container);
+                    setText(null);
                 }
             }
         });
     }
 
-    private String getClasseStatus(StatusEncontro status) {
+    private String formatarNomeServico(TipoServico servico) {
+        switch(servico) {
+            case MUSICA: return "Música";
+            case RECEPCAO_MAES: return "Recepção de Mães";
+            case ACOLHIDA: return "Acolhida";
+            case TERCO: return "Terço";
+            case FORMACAO: return "Formação";
+            case MOMENTO_ORACIONAL: return "Momento oracional";
+            case PROCLAMACAO_VITORIA: return "Proclamação da Vitória";
+            case SORTEIO_DAS_FLORES: return "Sorteio das Flores";
+            case ENCERRAMENTO: return "Encerramento";
+            case ARRUMACAO_CAPELA: return "Arrumação da Capela";
+            case QUEIMA_PEDIDOS: return "Queima dos Pedidos";
+            case COMPRA_FLORES: return "Compra das Flores";
+            default: return servico.name();
+        }
+    }
+
+    private void configurarComboEncontros() {
+        comboEncontros.setCellFactory(param -> new ListCell<Encontro>() {
+            @Override
+            protected void updateItem(Encontro encontro, boolean empty) {
+                super.updateItem(encontro, empty);
+                if (empty || encontro == null) {
+                    setText(null);
+                } else {
+                    String dataFormatada = dateFormatter.format(encontro.getData());
+                    String status = encontro.getStatus().toString();
+                    String statusPt = traduzirStatus(status);
+                    setText(String.format("%s - %s", dataFormatada, statusPt));
+                }
+            }
+        });
+
+        comboEncontros.setButtonCell(new ListCell<Encontro>() {
+            @Override
+            protected void updateItem(Encontro encontro, boolean empty) {
+                super.updateItem(encontro, empty);
+                if (empty || encontro == null) {
+                    setText(null);
+                } else {
+                    String dataFormatada = dateFormatter.format(encontro.getData());
+                    String statusPt = traduzirStatus(encontro.getStatus().toString());
+                    setText(String.format("%s - %s", dataFormatada, statusPt));
+                }
+            }
+        });
+    }
+
+    private String traduzirStatus(String status) {
         switch (status) {
-            case NAO_REALIZADO:
-                return "status-nao-realizado";
-            case REALIZADO:
-                return "status-realizado";
-            case FUTURO:
-                return "status-futuro";
-            case CANCELADO:
-                return "status-cancelado";
+            case "NAO_REALIZADO":
+                return "Não Realizado";
+            case "REALIZADO":
+                return "Realizado";
+            case "CANCELADO":
+                return "Cancelado";
             default:
-                return "";
+                return status;
         }
     }
 
     private void carregarTodosDados() {
         carregarEncontros();
         carregarMaes();
-        carregarProximosEncontros();
     }
 
     private void carregarEncontros() {
@@ -406,24 +387,7 @@ public class EditarEncontros {
         encontrosList.clear();
         encontrosList.addAll(encontros);
         comboEncontros.setItems(encontrosList);
-
-        // Carregar tipos de serviço
         comboServicos.setItems(tiposServicoList);
-    }
-
-    private void carregarProximosEncontros() {
-        // Filtrar apenas encontros futuros
-        ObservableList<Encontro> proximos = FXCollections.observableArrayList();
-        LocalDate hoje = LocalDate.now();
-
-        for (Encontro encontro : encontrosList) {
-            if (!encontro.getData().isBefore(hoje) &&
-                    encontro.getStatus() != StatusEncontro.CANCELADO) {
-                proximos.add(encontro);
-            }
-        }
-
-        listViewProximosEncontros.setItems(proximos);
     }
 
     private void carregarMaes() {
@@ -432,7 +396,6 @@ public class EditarEncontros {
         maesList.addAll(maes);
         comboMaes.setItems(maesList);
 
-        // Configurar exibição
         comboMaes.setCellFactory(param -> new ListCell<Mae>() {
             @Override
             protected void updateItem(Mae mae, boolean empty) {
@@ -460,9 +423,10 @@ public class EditarEncontros {
     private void carregarServicosEncontro() {
         servicosList.clear();
         if (encontroAtual != null && encontroAtual.getIdEncontro() > 0) {
-            if (encontroAtual.getServicos() != null && !encontroAtual.getServicos().isEmpty()) {
-                servicosList.addAll(encontroAtual.getServicos());
-            }
+            List<ServicoDoEncontro> servicos = servicoDAO.buscarPorEncontro(encontroAtual.getIdEncontro());
+            servicosList.addAll(servicos);
+            encontroAtual.getServicos().clear();
+            encontroAtual.getServicos().addAll(servicos);
         }
         listViewServicos.setItems(servicosList);
     }
@@ -573,29 +537,40 @@ public class EditarEncontros {
     }
 
     private void cancelarEncontro() {
-        encontroAtual = comboEncontros.getValue();
-        if (encontroAtual != null) {
-            Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmacao.setTitle("Confirmar Cancelamento");
-            confirmacao.setHeaderText("Cancelar Encontro");
-            confirmacao.setContentText("Deseja cancelar este encontro?\n(Status será alterado para CANCELADO)");
+        if (encontroAtual == null) {
+            encontroAtual = comboEncontros.getValue();
+        }
 
-            confirmacao.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    try {
-                        encontroAtual.setStatus(StatusEncontro.CANCELADO);
-                        encontroDAO.atualizar(encontroAtual);
-                        mostrarAlerta("Sucesso", "Encontro cancelado com sucesso!");
-                        carregarTodosDados();
-                        limparCampos();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        mostrarAlerta("Erro", "Erro ao cancelar encontro: " + e.getMessage());
-                    }
-                }
-            });
-        } else {
-            mostrarAlerta("Aviso", "Selecione um encontro para cancelar.");
+        if (encontroAtual == null) {
+            mostrarAlerta("Aviso", "Selecione um encontro primeiro.");
+            return;
+        }
+
+        final Encontro encontroFinal = encontroAtual;
+        final LocalDate dataFinal = encontroAtual.getData();
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Cancelar Encontro");
+        alerta.setHeaderText("Deseja cancelar este encontro?");
+        alerta.setContentText("Data: " + dateFormatter.format(dataFinal) +
+                "\nStatus será alterado para CANCELADO");
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+
+        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+            try {
+                encontroFinal.setStatus(StatusEncontro.CANCELADO);
+                encontroDAO.atualizar(encontroFinal);
+
+                comboStatus.setValue(StatusEncontro.CANCELADO);
+                mostrarAlerta("Sucesso", "Encontro cancelado!");
+
+                carregarTodosDados();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                mostrarAlerta("Erro", "Falha: " + e.getMessage());
+            }
         }
     }
 

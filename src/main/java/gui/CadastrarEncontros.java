@@ -3,11 +3,7 @@ package gui;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
@@ -40,6 +36,10 @@ public class CadastrarEncontros {
         
         Button btVoltar = new Button("Voltar");
         btVoltar.getStyleClass().add("btn_voltar");
+
+        VBox btVoltarContainer = new VBox();
+        btVoltarContainer.getChildren().add(btVoltar);
+        btVoltarContainer.setAlignment(Pos.TOP_LEFT);
         
         btVoltar.setOnAction(e -> {
             Encontros tela = new Encontros();
@@ -106,13 +106,26 @@ public class CadastrarEncontros {
         
         Button btCadastrar = new Button("Cadastrar");
         btCadastrar.getStyleClass().add("botao");
-        
+
         btCadastrar.setOnAction(e -> {
             boolean sucesso = cadastrarEncontro(
-                dataPicker.getValue(),
-                comboboxMap,
-                mensagemErro
+                    dataPicker.getValue(),
+                    comboboxMap,
+                    mensagemErro
             );
+
+            if (sucesso) {
+                Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                alerta.initOwner(encontroStage);
+                alerta.initModality(javafx.stage.Modality.WINDOW_MODAL);
+                alerta.setTitle("Sucesso");
+                alerta.setHeaderText(null);
+                alerta.setContentText("Encontro cadastrado com sucesso!");
+                alerta.showAndWait();
+
+                dataPicker.setValue(LocalDate.now());
+                comboboxMap.values().forEach(cb -> cb.getSelectionModel().clearSelection());
+            }
         });
         
         VBox layout = new VBox(30);
@@ -123,7 +136,6 @@ public class CadastrarEncontros {
         
         layout.getChildren().addAll(
             titulo,
-            btVoltar,
             linhaData,
             subtitulo,
             card,
@@ -131,6 +143,8 @@ public class CadastrarEncontros {
             mensagemErro,
             btCadastrar
         );
+
+
         
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(layout);
@@ -139,10 +153,12 @@ public class CadastrarEncontros {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.getStyleClass().add("scroll-pane-tela");
-        
+
         BorderPane root = new BorderPane();
+        root.setTop(btVoltarContainer);
         root.setCenter(scrollPane);
-        
+        root.getStyleClass().add("root");
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/gui/cadastrarencontros.css").toExternalForm());
         
@@ -183,7 +199,7 @@ public class CadastrarEncontros {
         try {
             Encontro encontro = new Encontro();
             encontro.setData(data);
-            encontro.setStatus(StatusEncontro.FUTURO);
+            encontro.setStatus(StatusEncontro.NAO_REALIZADO);
             
             int idEncontro = encontroController.cadastrar(encontro);
             
@@ -208,9 +224,6 @@ public class CadastrarEncontros {
                     servicoController.cadastrar(servico, encontro);
                 }
             }
-            
-            mensagemErro.setText("Encontro cadastrado com sucesso!");
-            mensagemErro.setStyle("-fx-text-fill: green;");
             return true;
             
         } catch (Exception e) {

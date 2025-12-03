@@ -14,22 +14,31 @@ import model.StatusEncontro;
 public class EncontroDAO {
 	
 	public EncontroDAO() {}
-	
-	public void cadastrar (Encontro encontro) {
-		String sql = "INSERT INTO Encontro(data, statusEncontro) VALUES (?,?)";
-		
-		try(Connection conn = ConnectionFactory.getConnection()){
-			
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setDate(1, java.sql.Date.valueOf(encontro.getData()));
-			stmt.setString(2, encontro.getStatus().name());
-			
-			stmt.executeUpdate();
-		
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
+
+    public int cadastrar(Encontro encontro) {
+        String sql = "INSERT INTO Encontro(data, statusEncontro) VALUES (?,?)";
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            PreparedStatement stmt = conn.prepareStatement(
+                    sql,
+                    PreparedStatement.RETURN_GENERATED_KEYS
+            );
+            stmt.setDate(1, java.sql.Date.valueOf(encontro.getData()));
+            stmt.setString(2, encontro.getStatus().name());
+            stmt.executeUpdate();
+
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
 	
 	public void atualizar(Encontro encontro) {
 		String sql = "UPDATE Encontro SET data = ?, statusEncontro = ? WHERE idEncontro = ? AND data > ?";

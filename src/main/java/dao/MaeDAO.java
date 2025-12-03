@@ -142,4 +142,30 @@ public class MaeDAO {
 		return listaAniversario;
 	}
 
+    public Mae buscarPorNome(String nome) {
+        String sql = "SELECT * FROM Mae WHERE nome = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection()){
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, nome);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                Mae mae = new Mae();
+                mae.setIdMae(rs.getInt("idMae"));
+                mae.setNome(rs.getString("nome"));
+                mae.setDataNasci(rs.getDate("dataNasci").toLocalDate());
+                mae.setTelefone(rs.getInt("telefone"));
+                mae.setEndereco(rs.getString("endereco"));
+                return mae;
+            }
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

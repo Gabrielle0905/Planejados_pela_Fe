@@ -38,14 +38,6 @@ public class Encontros{
 		Button btaniversariantes = new Button ("Aniversariantes");
 		btaniversariantes.getStyleClass().add("botaotopo");
 
-        Button btneditar = new Button("Editar");
-        btneditar.setOnAction(e -> {
-            Stage editarStage = new Stage();
-            EditarEncontros telaEditar = new EditarEncontros();
-            telaEditar.mostrar(editarStage);
-        });
-
-		
 		HBox topo = new HBox(40);
 		topo.setAlignment(Pos.CENTER);
 		topo.getChildren().addAll(btencontros, barra, btcadastromae, barra2, btaniversariantes);
@@ -106,8 +98,8 @@ public class Encontros{
 		
 		VBox card = new VBox(20); 
 		card.setId("card");
-		card.setPrefWidth(800);	
-		card.setPadding(new Insets(10, 0, 10, 0));
+		card.setPrefWidth(500);
+		card.setPadding(new Insets(10, 0, 10, 50));
 		card.setAlignment(Pos.CENTER);
 		
 		if (encontrosProximos.isEmpty()) {
@@ -119,6 +111,15 @@ public class Encontros{
 				Label id =  new Label("ID: " + e.getIdEncontro());
 				Label data = new Label("Data: " + e.getData().toString());
 				Button editar = new Button("Editar");
+
+                editar.setOnAction(event -> {
+                    EditarEncontros tela = new EditarEncontros();
+                    try {
+                        tela.mostrar(encontroStage);
+                    } catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                });
 				
 				HBox infos = new HBox(10);
 				infos.setAlignment(Pos.CENTER_LEFT);
@@ -146,7 +147,7 @@ public class Encontros{
 		layout.setPadding(new Insets(50, 0, 0, 0));
 		layout.setId("layout");
 		layout.setFillWidth(false);
-		layout.getChildren().addAll(titulo, btCadastrar, subtitulo, card, btTodosEnc, btneditar);
+		layout.getChildren().addAll(titulo, btCadastrar, subtitulo, card, btTodosEnc);
 		
 		BorderPane root = new BorderPane();
 		root.setTop(topo);
