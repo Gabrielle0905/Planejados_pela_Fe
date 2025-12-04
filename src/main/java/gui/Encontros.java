@@ -85,16 +85,18 @@ public class Encontros{
 		
 		EncontroDAO encontroDAO = new EncontroDAO();
 		List<Encontro> encontros = encontroDAO.listartodos();
-		
-		LocalDate hoje = LocalDate.now();
-		Month mesAtual = hoje.getMonth();
-		
-		List<Encontro> encontrosProximos = new ArrayList<>();
-		for (Encontro e: encontros) {
-			if (e.getData().getMonth() == mesAtual) {
-				encontrosProximos.add(e);
-			}
-		}	
+
+        LocalDate hoje = LocalDate.now();
+        LocalDate limite = hoje.plusDays(30);
+
+        List<Encontro> encontrosProximos = new ArrayList<>();
+        for (Encontro e : encontros) {
+            LocalDate dataEncontro = e.getData();
+            if (!dataEncontro.isBefore(hoje) &&
+                    !dataEncontro.isAfter(limite)) {
+                encontrosProximos.add(e);
+            }
+        }
 		
 		VBox card = new VBox(20); 
 		card.setId("card");
@@ -114,9 +116,10 @@ public class Encontros{
 
                 editar.setOnAction(event -> {
                     EditarEncontros tela = new EditarEncontros();
+                    Stage stage = (Stage) editar.getScene().getWindow();
                     try {
-                        tela.mostrar(encontroStage);
-                    } catch (Exception ex){
+                        tela.mostrar(stage, e);
+                    } catch (Exception ex) {
                         ex.printStackTrace();
                     }
                 });
